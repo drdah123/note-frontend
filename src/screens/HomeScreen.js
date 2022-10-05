@@ -31,7 +31,7 @@ const HomeScreen = () => {
   useEffect(() => {
     if (userInfo.length === 0) return navigate('/login');
     const tryy = async () => {
-      const { data } = await axios.get('http://localhost:3006/api/notes', {
+      const { data } = await axios.get('https://backend-2dcw.onrender.com/api/notes', {
         headers: {
           authorization: `Bearer ${userInfo.accessToken}`,
         },
@@ -108,7 +108,7 @@ const HomeScreen = () => {
     };
 
     const { data } = await axios.post(
-      'http://localhost:3006/api/notes',
+      'https://backend-2dcw.onrender.com/api/notes',
       {
         title: note.title,
         content: note.content,
@@ -160,7 +160,7 @@ const HomeScreen = () => {
   const updateNoteHandler = async () => {
     if (!validate()) return;
     const { data } = await axios.put(
-      `http://localhost:3006/api/notes/${choicedNote}`,
+      `https://backend-2dcw.onrender.com/api/notes/${choicedNote}`,
       {
         title: title,
         content: content,
@@ -211,7 +211,7 @@ const HomeScreen = () => {
     //saveToLocalStorage('notes', notes);
     try {
       const { data } = await axios.delete(
-        `http://localhost:3006/api/notes/${choicedNote}`,
+        `https://backend-2dcw.onrender.com/api/notes/${choicedNote}`,
         {
           headers: {
             authorization: `Bearer ${userInfo.accessToken}`,

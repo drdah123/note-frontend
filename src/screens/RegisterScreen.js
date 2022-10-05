@@ -22,7 +22,7 @@ const SignupScreen = () => {
       return alert('Passwords are not the same');
     try {
       const { data } = await axios.post(
-        'http://localhost:3006/api/auth/register',
+        'https://backend-2dcw.onrender.com/api/auth/register',
         {
           email,
           password,

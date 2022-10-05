@@ -15,7 +15,7 @@ const SigninScreen = () => {
 
     try {
       const { data } = await axios.post(
-        'http://localhost:3006/api/auth/login',
+        'https://backend-2dcw.onrender.com/api/auth/login',
         {
           email,
           password,
