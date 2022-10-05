@@ -21,16 +21,17 @@ const SignupScreen = () => {
     if (password !== confirmPassword)
       return alert('Passwords are not the same');
     try {
-      const { data } = await axios.post(
-        'https://backend-2dcw.onrender.com/api/auth/register',
-        {
-          email,
-          password,
-          name,
-        }
-      );
-      console.log(data.data);
-      localStorage.setItem('userInfo', JSON.stringify(data.data));
+      // const { data } = await axios.post(
+      //   'https://backend-2dcw.onrender.com/api/auth/register',
+      //   {
+      //     email,
+      //     password,
+      //     name,
+      //   }
+      // );
+      localStorage.setItem('userInfo', JSON.stringify([email, password, name]));
+      setUserInfo(JSON.parse(localStorage.getItem('userInfo')) || []);
+      navigate('/');
       navigate('/');
     } catch (error) {
       alert(getError(error));

@@ -14,14 +14,15 @@ const SigninScreen = () => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post(
-        'https://backend-2dcw.onrender.com/api/auth/login',
-        {
-          email,
-          password,
-        }
-      );
-      localStorage.setItem('userInfo', JSON.stringify(data.data));
+      // const { data } = await axios.post(
+      //   'https://backend-2dcw.onrender.com/api/auth/login',
+      //   {
+      //     email,
+      //     password,
+      //   }
+      // );
+      localStorage.setItem('userInfo', JSON.stringify([email, password]));
+      setUserInfo(JSON.parse(localStorage.getItem('userInfo')) || []);
       navigate('/');
       console.log(userInfo);
     } catch (error) {

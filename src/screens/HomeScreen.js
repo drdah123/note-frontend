@@ -31,13 +31,13 @@ const HomeScreen = () => {
   useEffect(() => {
     if (userInfo.length === 0) return navigate('/login');
     const tryy = async () => {
-      const { data } = await axios.get('https://backend-2dcw.onrender.com/api/notes', {
-        headers: {
-          authorization: `Bearer ${userInfo.accessToken}`,
-        },
-      });
-      if (data) {
-        setNotes(data.data);
+      // const { data } = await axios.get('https://backend-2dcw.onrender.com/api/notes', {
+      //   headers: {
+      //     authorization: `Bearer ${userInfo.accessToken}`,
+      //   },
+      // });
+      setNotes(JSON.parse(localStorage.getItem('notes')) || []);
+      if (notes.length > 0) {
         console.log(notes);
         console.log(data);
       }
@@ -107,24 +107,23 @@ const HomeScreen = () => {
       content: content,
     };
 
-    const { data } = await axios.post(
-      'https://backend-2dcw.onrender.com/api/notes',
-      {
-        title: note.title,
-        content: note.content,
-      },
-      {
-        headers: {
-          authorization: `Bearer ${userInfo.accessToken}`,
-        },
-      }
-    );
-    const noteAdded = data.data;
-    const updatedNotes = [...notes, noteAdded];
-    console.log(data.data);
-    setNotes(updatedNotes);
+    // const { data } = await axios.post(
+    //   'https://backend-2dcw.onrender.com/api/notes',
+    //   {
+    //     title: note.title,
+    //     content: note.content,
+    //   },
+    //   {
+    //     headers: {
+    //       authorization: `Bearer ${userInfo.accessToken}`,
+    //     },
+    //   }
+    // );
+    setNotes([...notes, note]);
+    localStorage.setItem('notes',JSON.stringify(notes))
+    console.log(notes)
     setAdding(false);
-    setChoicedNote(noteAdded._id);
+    setChoicedNote(note.id));
     setTitle('');
     setContent('');
   };
@@ -151,7 +150,7 @@ const HomeScreen = () => {
 
   // الانتقال الى وضع تعديل الملاحظة
   const editNoteHandler = () => {
-    const note = notes.find((note) => note._id === choicedNote);
+    const note = notes.find((note) => note.id === choicedNote);
     setEditing(true);
     setTitle(note.title);
     setContent(note.content);
@@ -159,22 +158,22 @@ const HomeScreen = () => {
   // تعديل ملاحظة
   const updateNoteHandler = async () => {
     if (!validate()) return;
-    const { data } = await axios.put(
-      `https://backend-2dcw.onrender.com/api/notes/${choicedNote}`,
-      {
-        title: title,
-        content: content,
-      },
-      {
-        headers: {
-          authorization: `Bearer ${userInfo.accessToken}`,
-        },
-      }
-    );
-    const editNote = data.data;
-    console.log('##############');
-    console.log(editNote);
-    console.log('##############');
+    // const { data } = await axios.put(
+    //   `https://backend-2dcw.onrender.com/api/notes/${choicedNote}`,
+    //   {
+    //     title: title,
+    //     content: content,
+    //   },
+    //   {
+    //     headers: {
+    //       authorization: `Bearer ${userInfo.accessToken}`,
+    //     },
+    //   }
+    // );
+    // const editNote = data.data;
+    // console.log('##############');
+    // console.log(editNote);
+    // console.log('##############');
     // const updatedNotes = [...notes];
     // const noteIndex = notes.findIndex((note) => note.id === choicedNote);
     // updatedNotes[noteIndex] = {
@@ -182,15 +181,15 @@ const HomeScreen = () => {
     //   title: title,
     //   content: content,
     // };
-    const noteIndex = notes.findIndex((note) => note._id === editNote._id);
+    const noteIndex = notes.findIndex((note) => note.id === choicedNote);
     const upadtedNotes = [...notes];
     upadtedNotes[noteIndex] = {
-      _id: editNote._id,
-      title: editNote.title,
-      content: editNote.content,
+      id: choicedNote,
+      title: title,
+      content: content,
     };
-    console.log(upadtedNotes[noteIndex]);
     setNotes(upadtedNotes);
+    localStorage.setItem('notes', JSON.stringify(notes))
     setEditing(false);
     setTitle('');
     setContent('');
@@ -210,19 +209,17 @@ const HomeScreen = () => {
     // notes.splice(noteIndex, 1);
     //saveToLocalStorage('notes', notes);
     try {
-      const { data } = await axios.delete(
-        `https://backend-2dcw.onrender.com/api/notes/${choicedNote}`,
-        {
-          headers: {
-            authorization: `Bearer ${userInfo.accessToken}`,
-          },
-        }
-      );
-      const Notes = notes.filter((note) => note._id !== choicedNote);
-      console.log('#########################');
-      console.log(Notes);
-      console.log('#########################');
+      // const { data } = await axios.delete(
+      //   `https://backend-2dcw.onrender.com/api/notes/${choicedNote}`,
+      //   {
+      //     headers: {
+      //       authorization: `Bearer ${userInfo.accessToken}`,
+      //     },
+      //   }
+      // );
+      const Notes = notes.filter((note) => note.id !== choicedNote);
       setNotes(Notes);
+      console.log(notes);
       setChoicedNote(null);
     } catch (e) {
       console.log(e);
